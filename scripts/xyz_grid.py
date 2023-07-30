@@ -442,6 +442,10 @@ class Script(scripts.Script):
                 include_lone_images = gr.Checkbox(label='Include Sub Images', value=False, elem_id=self.elem_id("include_lone_images"))
                 include_sub_grids = gr.Checkbox(label='Include Sub Grids', value=False, elem_id=self.elem_id("include_sub_grids"))
             with gr.Column():
+                vary_seeds_x = gr.Checkbox(label='Vary seed on X axis', value=False, elem_id=self.elem_id("vary_seeds_x"))
+                vary_seeds_y = gr.Checkbox(label='Vary seed on Y axis', value=False, elem_id=self.elem_id("vary_seeds_y"))
+                vary_seeds_z = gr.Checkbox(label='Vary seed on Z axis', value=False, elem_id=self.elem_id("vary_seeds_z"))
+            with gr.Column():
                 margin_size = gr.Slider(label="Grid margins (px)", minimum=0, maximum=500, value=0, step=2, elem_id=self.elem_id("margin_size"))
             with gr.Column():
                 csv_mode = gr.Checkbox(label='Use text inputs instead of dropdowns', value=False, elem_id=self.elem_id("csv_mode"))
@@ -525,11 +529,9 @@ class Script(scripts.Script):
             (z_values_dropdown, lambda params: get_dropdown_update_from_params("Z", params)),
         )
 
-        return [x_type, x_values, x_values_dropdown, y_type, y_values, y_values_dropdown, z_type, z_values, z_values_dropdown, draw_legend, include_lone_images, include_sub_grids, no_fixed_seeds, margin_size, csv_mode]
+        return [x_type, x_values, x_values_dropdown, y_type, y_values, y_values_dropdown, z_type, z_values, z_values_dropdown, draw_legend, include_lone_images, include_sub_grids, no_fixed_seeds, vary_seeds_x, vary_seeds_y, vary_seeds_z, margin_size]
 
-    def run(self, p, x_type, x_values, x_values_dropdown, y_type, y_values, y_values_dropdown, z_type, z_values, z_values_dropdown, draw_legend, include_lone_images, include_sub_grids, no_fixed_seeds, margin_size, csv_mode):
-        x_type, y_type, z_type = x_type or 0, y_type or 0, z_type or 0  # if axle type is None set to 0
-
+    def run(self, p, x_type, x_values, x_values_dropdown, y_type, y_values, y_values_dropdown, z_type, z_values, z_values_dropdown, draw_legend, include_lone_images, include_sub_grids, no_fixed_seeds, vary_seeds_x, vary_seeds_y, vary_seeds_z, margin_size):
         if not no_fixed_seeds:
             modules.processing.fix_seed(p)
 
@@ -702,12 +704,17 @@ class Script(scripts.Script):
             y_opt.apply(pc, y, ys)
             z_opt.apply(pc, z, zs)
 
-            try:
-                res = process_images(pc)
-            except Exception as e:
-                errors.display(e, "generating image for xyz plot")
+            xdim = len(xs) if vary_seeds_x else 1
+            ydim = len(ys) if vary_seeds_y else 1
 
-                res = Processed(p, [], p.seed, "")
+            if vary_seeds_x:
+               pc.seed += ix
+            if vary_seeds_y:
+               pc.seed += iy * xdim
+            if vary_seeds_z:
+               pc.seed += iz * xdim * ydim
+
+            res = process_images(pc)
 
             # Sets subgrid infotexts
             subgrid_index = 1 + iz
