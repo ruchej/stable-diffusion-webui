@@ -138,17 +138,6 @@
  * fix error that causes some extra networks to be disabled if both <lora:> and <lyco:> are present in the prompt
  * fix defaults settings page breaking when any of main UI tabs are hidden
  * fix incorrect save/display of new values in Defaults page in settings
- * fix for Reload UI function: if you reload UI on one tab, other opened tabs will no longer stop working
- * fix an error that prevents VAE being reloaded after an option change if a VAE near the checkpoint exists ([#12797](https://github.com/AUTOMATIC1111/stable-diffusion-webui/pull/12737))
- * hide broken image crop tool ([#12792](https://github.com/AUTOMATIC1111/stable-diffusion-webui/pull/12737))
- * don't show hidden samplers in dropdown for XYZ script ([#12780](https://github.com/AUTOMATIC1111/stable-diffusion-webui/pull/12737))
- * fix style editing dialog breaking if it's opened in both img2img and txt2img tabs
- * fix a bug allowing users to bypass gradio and API authentication (reported by vysecurity) 
- * fix notification not playing when built-in webui tab is inactive ([#12834](https://github.com/AUTOMATIC1111/stable-diffusion-webui/pull/12834))
- * honor `--skip-install` for extension installers ([#12832](https://github.com/AUTOMATIC1111/stable-diffusion-webui/pull/12832))
- * don't print blank stdout in extension installers ([#12833](https://github.com/AUTOMATIC1111/stable-diffusion-webui/pull/12832), [#12855](https://github.com/AUTOMATIC1111/stable-diffusion-webui/pull/12855))
- * do not change quicksettings dropdown option when value returned is `None` ([#12854](https://github.com/AUTOMATIC1111/stable-diffusion-webui/pull/12854))
- * get progressbar to display correctly in extensions tab
 
 
 ## 1.5.2
