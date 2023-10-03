@@ -232,7 +232,7 @@ function popup(contents) {
     if (!globalPopup) {
         globalPopup = document.createElement('div');
         globalPopup.classList.add('global-popup');
-        
+
         var close = document.createElement('div');
         close.classList.add('global-popup-close');
         close.addEventListener("click", closePopup);
