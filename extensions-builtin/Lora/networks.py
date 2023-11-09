@@ -490,7 +490,6 @@ def network_reset_cached_weight(self: Union[torch.nn.Conv2d, torch.nn.Linear]):
     self.network_weights_backup = None
     self.network_bias_backup = None
 
-
 def network_Linear_forward(self, input):
     if shared.opts.lora_functional:
         return network_forward(self, input, originals.Linear_forward)
