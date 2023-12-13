@@ -80,21 +80,3 @@ class NetworkModuleOFT(network.NetworkModule):
         print(torch.norm(updown))
         output_shape = orig_weight.shape
         return self.finalize_updown(updown, orig_weight, output_shape)
-
-    def finalize_updown(self, updown, orig_weight, output_shape, ex_bias=None):
-        if self.bias is not None:
-            updown = updown.reshape(self.bias.shape)
-            updown += self.bias.to(orig_weight.device, dtype=orig_weight.dtype)
-            updown = updown.reshape(output_shape)
-
-        if len(output_shape) == 4:
-            updown = updown.reshape(output_shape)
-
-        if orig_weight.size().numel() == updown.size().numel():
-            updown = updown.reshape(orig_weight.shape)
-
-        if ex_bias is not None:
-            ex_bias = ex_bias * self.multiplier()
-
-        # Ignore calc_scale, which is not used in OFT.
-        return updown * self.multiplier(), ex_bias
