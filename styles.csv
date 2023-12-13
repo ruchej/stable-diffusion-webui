@@ -1,0 +1,28 @@
+﻿name,prompt,negative_prompt
++ Details,maximum details,
++ Natural Skin,"{prompt}, (natural skin texture, hyperrealism, soft light, muted colors), background","cgi, {prompt}, 3d, illustration, cartoon, (doll:0.9), octane"
+- Basic Negative,,"[deformed | disfigured], poorly drawn, [bad : wrong] anatomy, [extra | missing | floating | disconnected] limb, (mutated hands and fingers), blurry"
+- Anime Negative,,"(worst quality, mutated hands and fingers, bad anatomy, wrong anatomy, mutation:1.2), watermark, signature"
+Illustration,"(illustration:1.15), {prompt}, [cory loftis, strobist, pascal campion :: 0.2]","octane, 3d, {prompt}, photo"
+Painting,"(pascal campion:0.38), vivid colors, (painting art:0.06), [eclectic:clear:0.8]","vignette, cinematic, grayscale, bokeh, blurred, depth of field"
+Acrylic,"acrylic illustration, {prompt}, acrylic paint, oily sketch","red, photo, 3d, octane, {prompt}"
+Retro futuristic,"{prompt}, art by angus mckie","watermark, signature"
+Caricature,"big head, big eyes, caricature, a caricature, rendering, (figurativism:0.8)",
+Paper-cut,"(paper-cut craft:1.2), {prompt}","photo, {prompt}"
+3d (render) 👎,"eevee, 3d, render, 3 point light, (glossy:0.76), ambient occlusion","watermark, signature"
+3d (render) 👍,"epic realistic, hyperdetailed, (cycles render:1.3), caustics, (glossy:0.58), (artstation:0.82)",
+3d (movie),"epic realistic, pixar style, disney, (cycles render:1.3), caustics, (glossy:0.58), (artstation:0.2), cute",
+Isometric,"{prompt}, (isometric:1.2) 3d art, artstation, demo","watermark, signature"
+8bit,"pixel art, 8bit, aliasing","photo, octane, fabric, realistic, material, grain, grainy"
+Logo,"(logo:1.3), vector graphics, brand, design, inspired, (straight:1.3), (symmetrical:0.4)",
+Logo (minimalistic),"art by keith negley, (logo:1.3), vector graphics, design, (straight:1.3), (symmetrical:0.4), by keith negley, [[jean arp]], minimalistic",
+Engraving,"(grayscale, woodcut:1.2), (etching:1.1), (engraving:0.2), {prompt}","photo, 3d, colored"
+Comic book,"comic style, illustration, cartoon, {prompt}, [[by phil jimenez]]",bw {prompt}
+Cinematic,"{prompt}, cinematic, (muted colors:1.2), background (filmic:0.7)","3d, dof, rutkowski, oversaturated, [doll :: 0.33], {prompt}"
+Cinematic (horror),"slate atmosphere, cinematic, dimmed colors, dark shot, muted colors, film grainy, lut, spooky",
+Cinematic (art),"art by greg rutkowski and artgerm, soft cinematic light, adobe lightroom, photolab, hdr, intricate, highly detailed, (depth of field:1.4)",
+Gloomy,"complex background, background, highly detailed, gloomy, eerie, dark, dimmed, hdr, vignette, grimy, (slate atmosphere:0.4)","(depth of field:1.3), (bokeh:1.2), (blur), pink"
+Professional photo,"professional detailed photography, {prompt}, (muted colors, dim colors, soothing tones), (vsco:0.3)","oversaturated, [doll :: 0.5], {prompt}"
+Midjourney,"epic realistic, {prompt}, rutkowski, rim light",
+XpucT (Art),"[dark theme :: 0.3], {prompt}, (hdr:1.2), art (by jordan grimmer:0.2)","dof, {prompt}"
+XpucT (cinemArt),"hyperrealism, atmospheric","dof, {prompt}"
