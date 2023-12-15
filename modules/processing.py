@@ -1070,6 +1070,7 @@ class StableDiffusionProcessingTxt2Img(StableDiffusionProcessing):
     hr_sampler_name: str = None
     hr_prompt: str = ''
     hr_negative_prompt: str = ''
+    force_task_id: str = None
 
     cached_hr_uc = [None, None]
     cached_hr_c = [None, None]
@@ -1403,6 +1404,7 @@ class StableDiffusionProcessingImg2Img(StableDiffusionProcessing):
     inpainting_mask_invert: int = 0
     initial_noise_multiplier: float = None
     latent_mask: Image = None
+    force_task_id: string = None
 
     image_mask: Any = field(default=None, init=False)
 
