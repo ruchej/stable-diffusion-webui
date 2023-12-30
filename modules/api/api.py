@@ -488,6 +488,10 @@ class Api:
             if not script_runner.scripts:
                 script_runner.initialize_scripts(True)
                 ui.create_ui()
+
+            infotext_script_args = {}
+            self.apply_infotext(img2imgreq, "img2img", script_runner=script_runner, mentioned_script_args=infotext_script_args)
+
             if not self.default_script_arg_img2img:
                 self.default_script_arg_img2img = self.init_default_script_args(script_runner)
         selectable_scripts, selectable_script_idx = self.get_selectable_script(img2imgreq.script_name, script_runner)
