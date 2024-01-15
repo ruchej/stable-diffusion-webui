@@ -13,7 +13,6 @@ import html
 from fastapi.exceptions import HTTPException
 
 from modules.infotext_utils import image_from_url_text
-from modules.ui_components import ToolButton
 
 extra_pages = []
 allowed_dirs = set()
@@ -224,7 +223,6 @@ class ExtraNetworksPage:
         height = f"height: {shared.opts.extra_networks_card_height}px;" if shared.opts.extra_networks_card_height else ''
         width = f"width: {shared.opts.extra_networks_card_width}px;" if shared.opts.extra_networks_card_width else ''
         background_image = f'<img src="{html.escape(preview)}" class="preview" loading="lazy">' if preview else ''
-
 
         onclick = item.get("onclick", None)
         if onclick is None:
@@ -550,8 +548,6 @@ def pages_in_preferred_order(pages):
     return sorted(pages, key=lambda x: tab_scores[x.name])
 
 def create_ui(interface: gr.Blocks, unrelated_tabs, tabname):
-    from modules.ui import switch_values_symbol
-
     ui = ExtraNetworksUi()
     ui.pages = []
     ui.pages_contents = []
@@ -586,6 +582,9 @@ def create_ui(interface: gr.Blocks, unrelated_tabs, tabname):
 
     ui.button_save_preview = gr.Button('Save preview', elem_id=tabname+"_save_preview", visible=False)
     ui.preview_target_filename = gr.Textbox('Preview save filename', elem_id=tabname+"_preview_filename", visible=False)
+
+    for tab in unrelated_tabs:
+        tab.select(fn=None, _js='function(){ extraNetworksUrelatedTabSelected("' + tabname + '"); }', inputs=[], outputs=[], show_progress=False)
 
     def create_html():
         ui.pages_contents = [pg.create_html(ui.tabname) for pg in ui.stored_extra_pages]
