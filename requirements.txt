@@ -4,8 +4,6 @@ accelerate
 
 blendmodes
 clean-fid
-cloudpickle
-decorator
 einops
 facexlib
 fastapi>=0.90.1
@@ -30,5 +28,4 @@ tomesd
 torch
 torchdiffeq
 torchsde
-tornado
 transformers==4.30.2
