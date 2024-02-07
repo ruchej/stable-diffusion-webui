@@ -1,5 +1,6 @@
 import torch
 import network
+from lyco_helpers import factorization, butterfly_factor
 from einops import rearrange
 
 
@@ -36,12 +37,11 @@ class NetworkModuleOFT(network.NetworkModule):
             # self.alpha is unused
             self.dim = self.oft_blocks.shape[1] # (num_blocks, block_size, block_size)
 
-        # LyCORIS BOFT
-        if self.oft_blocks.dim() == 4:
-            self.is_boft = True
-        self.rescale = weights.w.get('rescale', None)
-        if self.rescale is not None:
-            self.rescale = self.rescale.reshape(-1, *[1]*(self.org_module[0].weight.dim() - 1))
+            self.is_boft = False
+            if "boft" in weights.w.keys():
+                self.is_boft = True
+                self.boft_b = weights.w["boft_b"]
+                self.boft_m = weights.w["boft_m"]
 
         is_linear = type(self.sd_module) in [torch.nn.Linear, torch.nn.modules.linear.NonDynamicallyQuantizableLinear]
         is_conv = type(self.sd_module) in [torch.nn.Conv2d]
@@ -91,10 +91,9 @@ class NetworkModuleOFT(network.NetworkModule):
             )
             merged_weight = rearrange(merged_weight, 'k m ... -> (k m) ...')
         else:
-            # TODO: determine correct value for scale
             scale = 1.0
-            m = self.boft_m
-            b = self.boft_b
+            m = self.boft_m.to(device=oft_blocks.device, dtype=oft_blocks.dtype)
+            b = self.boft_b.to(device=oft_blocks.device, dtype=oft_blocks.dtype)
             r_b = b // 2
             inp = orig_weight
             for i in range(m):
@@ -102,16 +101,14 @@ class NetworkModuleOFT(network.NetworkModule):
                 if i == 0:
                     # Apply multiplier/scale and rescale into first weight
                     bi = bi * scale + (1 - scale) * eye
+                    #if self.rescaled:
+                    #    bi = bi * self.rescale
                 inp = rearrange(inp, "(c g k) ... -> (c k g) ...", g=2, k=2**i * r_b)
                 inp = rearrange(inp, "(d b) ... -> d b ...", b=b)
                 inp = torch.einsum("b i j, b j ... -> b i ...", bi, inp)
                 inp = rearrange(inp, "d b ... -> (d b) ...")
                 inp = rearrange(inp, "(c k g) ... -> (c g k) ...", g=2, k=2**i * r_b)
             merged_weight = inp
-
-        # Rescale mechanism
-        if self.rescale is not None:
-            merged_weight = self.rescale.to(merged_weight) * merged_weight
 
         updown = merged_weight.to(orig_weight.device) - orig_weight.to(merged_weight.dtype)
         output_shape = orig_weight.shape
