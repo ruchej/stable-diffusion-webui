@@ -54,10 +54,14 @@ class NetworkModuleOFT(network.NetworkModule):
         elif is_other_linear:
             self.out_dim = self.sd_module.embed_dim
 
-        self.num_blocks = self.dim
-        self.block_size = self.out_dim // self.dim
-        self.constraint = (0 if self.alpha is None else self.alpha) * self.out_dim
-        if self.is_R:
+        if self.is_kohya:
+            self.constraint = self.alpha * self.out_dim
+            self.num_blocks = self.dim
+            self.block_size = self.out_dim // self.dim
+        elif self.is_boft:
+            self.constraint = None
+            self.block_size, self.block_num = butterfly_factor(self.out_dim, self.dim)
+        else:
             self.constraint = None
             self.block_size = self.dim
             self.num_blocks = self.out_dim // self.dim
