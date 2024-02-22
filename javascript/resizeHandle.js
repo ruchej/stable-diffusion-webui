@@ -75,18 +75,10 @@
 
         ['mousedown', 'touchstart'].forEach((eventType) => {
             resizeHandle.addEventListener(eventType, (evt) => {
-                if (eventType.startsWith('mouse')) {
+                if (eventType.startsWith('mouse')){
                     if (evt.button !== 0) return;
                 } else {
                     if (evt.changedTouches.length !== 1) return;
-
-                    const currentTime = new Date().getTime();
-                    if (R.lastTapTime && currentTime - R.lastTapTime <= DOUBLE_TAP_DELAY) {
-                        onDoubleClick(evt);
-                        return;
-                    }
-
-                    R.lastTapTime = currentTime;
                 }
 
                 evt.preventDefault();
@@ -97,9 +89,10 @@
                 R.tracking = true;
                 R.parent = parent;
                 R.parentWidth = parent.offsetWidth;
+                R.handle = resizeHandle;
                 R.leftCol = leftCol;
                 R.leftColStartWidth = leftCol.offsetWidth;
-                if (eventType.startsWith('mouse')) {
+                if (eventType.startsWith('mouse')){
                     R.screenX = evt.screenX;
                 } else {
                     R.screenX = evt.changedTouches[0].screenX;
@@ -114,23 +107,20 @@
 
     ['mousemove', 'touchmove'].forEach((eventType) => {
         window.addEventListener(eventType, (evt) => {
-            if (eventType.startsWith('mouse')) {
+            if (eventType.startsWith('mouse')){
                 if (evt.button !== 0) return;
             } else {
                 if (evt.changedTouches.length !== 1) return;
             }
 
             if (R.tracking) {
-                if (eventType.startsWith('mouse')) {
-                    evt.preventDefault();
-                }
+                evt.preventDefault();
                 evt.stopPropagation();
-
-                let delta = 0;
-                if (eventType.startsWith('mouse')) {
-                    delta = R.screenX - evt.screenX;
+                
+                if (eventType.startsWith('mouse')){
+                    var delta = R.screenX - evt.screenX;
                 } else {
-                    delta = R.screenX - evt.changedTouches[0].screenX;
+                    var delta = R.screenX - evt.changedTouches[0].screenX;
                 }
                 const leftColWidth = Math.max(Math.min(R.leftColStartWidth - delta, R.parent.offsetWidth - GRADIO_MIN_WIDTH - PAD), GRADIO_MIN_WIDTH);
                 setLeftColGridTemplate(R.parent, leftColWidth);
@@ -140,7 +130,7 @@
 
     ['mouseup', 'touchend'].forEach((eventType) => {
         window.addEventListener(eventType, (evt) => {
-            if (eventType.startsWith('mouse')) {
+            if (eventType.startsWith('mouse')){
                 if (evt.button !== 0) return;
             } else {
                 if (evt.changedTouches.length !== 1) return;
