@@ -75,7 +75,7 @@
 
         ['mousedown', 'touchstart'].forEach((eventType) => {
             resizeHandle.addEventListener(eventType, (evt) => {
-                if (eventType.startsWith('mouse')){
+                if (eventType.startsWith('mouse')) {
                     if (evt.button !== 0) return;
                 } else {
                     if (evt.changedTouches.length !== 1) return;
@@ -92,7 +92,7 @@
                 R.handle = resizeHandle;
                 R.leftCol = leftCol;
                 R.leftColStartWidth = leftCol.offsetWidth;
-                if (eventType.startsWith('mouse')){
+                if (eventType.startsWith('mouse')) {
                     R.screenX = evt.screenX;
                 } else {
                     R.screenX = evt.changedTouches[0].screenX;
@@ -107,20 +107,23 @@
 
     ['mousemove', 'touchmove'].forEach((eventType) => {
         window.addEventListener(eventType, (evt) => {
-            if (eventType.startsWith('mouse')){
+            if (eventType.startsWith('mouse')) {
                 if (evt.button !== 0) return;
             } else {
                 if (evt.changedTouches.length !== 1) return;
             }
 
             if (R.tracking) {
-                evt.preventDefault();
+                if (eventType.startsWith('mouse')) {
+                    evt.preventDefault();
+                }
                 evt.stopPropagation();
                 
-                if (eventType.startsWith('mouse')){
-                    var delta = R.screenX - evt.screenX;
+                let delta = 0;
+                if (eventType.startsWith('mouse')) {
+                    delta = R.screenX - evt.screenX;
                 } else {
-                    var delta = R.screenX - evt.changedTouches[0].screenX;
+                    delta = R.screenX - evt.changedTouches[0].screenX;
                 }
                 const leftColWidth = Math.max(Math.min(R.leftColStartWidth - delta, R.parent.offsetWidth - GRADIO_MIN_WIDTH - PAD), GRADIO_MIN_WIDTH);
                 setLeftColGridTemplate(R.parent, leftColWidth);
@@ -130,7 +133,7 @@
 
     ['mouseup', 'touchend'].forEach((eventType) => {
         window.addEventListener(eventType, (evt) => {
-            if (eventType.startsWith('mouse')){
+            if (eventType.startsWith('mouse')) {
                 if (evt.button !== 0) return;
             } else {
                 if (evt.changedTouches.length !== 1) return;
