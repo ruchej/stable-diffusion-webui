@@ -100,7 +100,12 @@
             });
         });
 
-        resizeHandle.addEventListener('dblclick', onDoubleClick);
+        resizeHandle.addEventListener('dblclick', (evt) => {
+            evt.preventDefault();
+            evt.stopPropagation();
+
+            parent.style.gridTemplateColumns = parent.style.originalGridTemplateColumns;
+        });
 
         afterResize(parent);
     }
