@@ -24,17 +24,11 @@
     function displayResizeHandle(parent) {
         if (window.innerWidth < GRADIO_MIN_WIDTH * 2 + PAD * 4) {
             parent.style.display = 'flex';
-            parent.querySelector('.resize-handle').style.display = "none";
-            if (R.handle != null) {
-                R.handle.style.opacity = '0';
-            }
+            parent.resizeHandle.style.display = "none";
             return false;
         } else {
             parent.style.display = 'grid';
-            parent.querySelector('.resize-handle').style.display = 'block';
-            if (R.handle != null) {
-                R.handle.style.opacity = '100';
-            }
+            parent.resizeHandle.style.display = "block";
             return true;
         }
     }
@@ -95,7 +89,6 @@
                 R.tracking = true;
                 R.parent = parent;
                 R.parentWidth = parent.offsetWidth;
-                R.handle = resizeHandle;
                 R.leftCol = leftCol;
                 R.leftColStartWidth = leftCol.offsetWidth;
                 if (eventType.startsWith('mouse')) {
