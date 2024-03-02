@@ -887,7 +887,6 @@ def reload_model_weights(sd_model=None, info=None, forced_reload=False):
 
     sd_model = reuse_model_from_already_loaded(sd_model, checkpoint_info, timer)
     if not forced_reload and sd_model is not None and sd_model.sd_checkpoint_info.filename == checkpoint_info.filename:
-        apply_alpha_schedule_override(sd_model)
         return sd_model
 
     if sd_model is not None:
