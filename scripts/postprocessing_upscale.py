@@ -1,3 +1,5 @@
+import re
+
 from PIL import Image
 import numpy as np
 
@@ -39,9 +41,28 @@ class ScriptPostprocessingUpscale(scripts_postprocessing.ScriptPostprocessing):
                                 upscaling_res_switch_btn = ToolButton(value=switch_values_symbol, elem_id="upscaling_res_switch_btn", tooltip="Switch width/height")
                                 upscaling_crop = gr.Checkbox(label='Crop to fit', value=True, elem_id="extras_upscaling_crop")
 
+            with FormRow():
+                extras_upscaler_1 = gr.Dropdown(label='Upscaler 1', elem_id="extras_upscaler_1", choices=[x.name for x in shared.sd_upscalers], value=shared.sd_upscalers[0].name)
+
+            with FormRow():
+                extras_upscaler_2 = gr.Dropdown(label='Upscaler 2', elem_id="extras_upscaler_2", choices=[x.name for x in shared.sd_upscalers], value=shared.sd_upscalers[0].name)
+                extras_upscaler_2_visibility = gr.Slider(minimum=0.0, maximum=1.0, step=0.001, label="Upscaler 2 visibility", value=0.0, elem_id="extras_upscaler_2_visibility")
+
+        def on_selected_upscale_method(upscale_method):
+            if not shared.opts.set_scale_by_when_changing_upscaler:
+                return gr.update()
+
+            match = re.search(r'(\d)[xX]|[xX](\d)', upscale_method)
+            if not match:
+                return gr.update()
+
+            return gr.update(value=int(match.group(1) or match.group(2)))
+
         upscaling_res_switch_btn.click(lambda w, h: (h, w), inputs=[upscaling_resize_w, upscaling_resize_h], outputs=[upscaling_resize_w, upscaling_resize_h], show_progress=False)
         tab_scale_by.select(fn=lambda: 0, inputs=[], outputs=[selected_tab])
         tab_scale_to.select(fn=lambda: 1, inputs=[], outputs=[selected_tab])
+
+        extras_upscaler_1.change(on_selected_upscale_method, inputs=[extras_upscaler_1], outputs=[upscaling_resize], show_progress="hidden")
 
         return {
             "upscale_enabled": upscale_enabled,
