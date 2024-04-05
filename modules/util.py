@@ -148,26 +148,35 @@ class MassFileLister:
         """Clear the cache of all directories."""
         self.cached_dirs.clear()
 
+def open_folder(path):
+    # import at function level to avoid potential issues
+    import gradio as gr
+    import platform
+    import sys
+    import subprocess
 
-def topological_sort(dependencies):
-    """Accepts a dictionary mapping name to its dependencies, returns a list of names ordered according to dependencies.
-    Ignores errors relating to missing dependeencies or circular dependencies
-    """
+    if not os.path.exists(path):
+        msg = f'Folder "{path}" does not exist. after you save an image, the folder will be created.'
+        print(msg)
+        gr.Info(msg)
+        return
+    elif not os.path.isdir(path):
+        msg = f"""
+WARNING
+An open_folder request was made with an path that is not a folder.
+This could be an error or a malicious attempt to run code on your computer.
+Requested path was: {path}
+"""
+        print(msg, file=sys.stderr)
+        gr.Warning(msg)
+        return
 
-    visited = {}
-    result = []
-
-    def inner(name):
-        visited[name] = True
-
-        for dep in dependencies.get(name, []):
-            if dep in dependencies and dep not in visited:
-                inner(dep)
-
-        result.append(name)
-
-    for depname in dependencies:
-        if depname not in visited:
-            inner(depname)
-
-    return result
+    path = os.path.normpath(path)
+    if platform.system() == "Windows":
+        os.startfile(path)
+    elif platform.system() == "Darwin":
+        subprocess.Popen(["open", path])
+    elif "microsoft-standard-WSL2" in platform.uname().release:
+        subprocess.Popen(["wsl-open", path])
+    else:
+        subprocess.Popen(["xdg-open", path])
