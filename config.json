@@ -67,7 +67,7 @@
     "training_enable_tensorboard": false,
     "training_tensorboard_save_images": false,
     "training_tensorboard_flush_every": 120,
-    "sd_model_checkpoint": "deliberate_v3.safetensors [aadddd3d75]",
+    "sd_model_checkpoint": "Deliberate_v5.safetensors [636fe404e3]",
     "sd_checkpoint_cache": 3,
     "sd_vae_checkpoint_cache": 2,
     "sd_vae": "None",
@@ -204,7 +204,7 @@
     "disabled_extensions": [],
     "disable_all_extensions": "none",
     "restore_config_state_file": "",
-    "sd_checkpoint_hash": "aadddd3d7579de79db91f4ac03f2fbad4e9b71216bbebb50c338cae74b77cb27",
+    "sd_checkpoint_hash": "636fe404e3fd0c612ea3f2bd5d6f66fe8f005c026fac4fb54ee5c811ecd0da2c",
     "ldsr_steps": 100,
     "ldsr_cached": false,
     "SCUNET_tile": 256,
@@ -355,5 +355,14 @@
     "s_tmax": 0,
     "sgm_noise_multiplier": false,
     "SWIN_torch_compile": false,
-    "control_net_unit_count": 3
+    "control_net_unit_count": 3,
+    "hypertile_enable_unet": false,
+    "hypertile_enable_unet_secondpass": false,
+    "hypertile_max_depth_unet": 3,
+    "hypertile_max_tile_unet": 256,
+    "hypertile_swap_size_unet": 3,
+    "hypertile_enable_vae": false,
+    "hypertile_max_depth_vae": 3,
+    "hypertile_max_tile_vae": 128,
+    "hypertile_swap_size_vae": 3
 }
