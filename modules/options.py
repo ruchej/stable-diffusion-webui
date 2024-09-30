@@ -255,6 +255,8 @@ class Options:
 
     def add_option(self, key, info):
         self.data_labels[key] = info
+        if key not in self.data and not info.do_not_save:
+            self.data[key] = info.default
 
     def reorder(self):
         """Reorder settings so that:

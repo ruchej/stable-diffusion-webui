@@ -3,7 +3,7 @@ import contextlib
 from functools import lru_cache
 
 import torch
-from modules import errors, shared
+from modules import errors, shared, npu_specific
 
 if sys.platform == "darwin":
     from modules import mac_specific

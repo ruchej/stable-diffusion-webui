@@ -188,7 +188,7 @@ class NetworkModule:
         )
 
         dora_merged = (
-            merged_scale1 / merged_scale1.mean(dim=self.dora_mean_dim, keepdim=True) * self.dora_scale
+            merged_scale1 * (dora_scale / merged_scale1_norm)
         )
         final_updown = dora_merged - orig_weight
         return final_updown

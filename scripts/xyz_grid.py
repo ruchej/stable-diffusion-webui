@@ -95,6 +95,17 @@ def confirm_checkpoints_or_none(p, xs):
             raise RuntimeError(f"Unknown checkpoint: {x}")
 
 
+def confirm_range(min_val, max_val, axis_label):
+    """Generates a AxisOption.confirm() function that checks all values are within the specified range."""
+
+    def confirm_range_fun(p, xs):
+        for x in xs:
+            if not (max_val >= x >= min_val):
+                raise ValueError(f'{axis_label} value "{x}" out of range [{min_val}, {max_val}]')
+
+    return confirm_range_fun
+
+
 def apply_size(p, x: str, xs) -> None:
     try:
         width, _, height = x.partition('x')
@@ -527,7 +538,6 @@ class Script(scripts.Script):
     def run(self, p, x_type, x_values, x_values_dropdown, y_type, y_values, y_values_dropdown, z_type, z_values, z_values_dropdown, draw_legend, include_lone_images, include_sub_grids, no_fixed_seeds, vary_seeds_x, vary_seeds_y, vary_seeds_z, margin_size, csv_mode):
         x_type, y_type, z_type = x_type or 0, y_type or 0, z_type or 0  # if axle type is None set to 0
 
-    def run(self, p, x_type, x_values, x_values_dropdown, y_type, y_values, y_values_dropdown, z_type, z_values, z_values_dropdown, draw_legend, include_lone_images, include_sub_grids, no_fixed_seeds, vary_seeds_x, vary_seeds_y, vary_seeds_z, margin_size):
         if not no_fixed_seeds:
             modules.processing.fix_seed(p)
 
@@ -706,6 +716,18 @@ class Script(scripts.Script):
 
             xdim = len(xs) if vary_seeds_x else 1
             ydim = len(ys) if vary_seeds_y else 1
+
+            if vary_seeds_x:
+                pc.seed += ix
+            if vary_seeds_y:
+                pc.seed += iy * xdim
+            if vary_seeds_z:
+                pc.seed += iz * xdim * ydim
+
+            try:
+                res = process_images(pc)
+            except Exception as e:
+                errors.display(e, "generating image for xyz plot")
 
             if vary_seeds_x:
                 pc.seed += ix
