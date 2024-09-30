@@ -2178,5 +2178,7 @@
     "customscript/postprocessing_autosized_crop.py/extras/Error threshold/step": 0.01,
     "customscript/postprocessing_create_flipped_copies.py/extras/Create flipped copies/visible": true,
     "customscript/postprocessing_caption.py/extras/Caption/visible": true,
-    "extras/Interrupting.../visible": true
+    "extras/Interrupting.../visible": true,
+    "img2img/Tabs@img2img_batch_source/selected": null,
+    "img2img/Tabs@img2img_tabs_resize/selected": null
 }
